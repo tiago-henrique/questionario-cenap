@@ -1,0 +1,23 @@
+﻿Variable / Field Name;Form Name;Field Type;Field Label;Choices, Calculations, OR Slider Labels;Field Note
+vinculo_institucional;form_1;dropdown;Unidade do complexo FAMERP/FUNFARME na qual possuí vínculo;1, Faculdade de Medicina de São José do Rio Preto - FAMERP | 2, Hospital de Base - HB | 3, Hospital da Criança e Maternidade - HCM | 4, Rede de Reabilitação Lucy Montoro | 5, Ambulatório de Especialidades Médicas | 6, Hospital Municipal - HM | 7, Hemocentro de São José do Rio Preto | 8, AME | 9, Outro;
+outro_setor;form_1;text;Especifique outro setor;;
+setor_trabalho;form_1;text;Setor onde trabalha;;
+categoria_profissional;form_1;dropdown;Categoria profissional:;1, Docente FAMERP | 2, Médico FUNFARME | 3, Residente (COREME, COREMU E COAPRIMO) | 4, Pós-Graduação (Mestrado e Doutorado) | 5, Graduação (Iniciação Científica) | 6, Equipe Multiprofissional | 7, Gestão/Administrativo | 8, Outros;
+participa_pesquisa;form_1;radio;Você participa atualmente de algum projeto de pesquisa? ;0, Não | 1, Sim;
+publicacao_cinco_anos;form_1;radio;Nos últimos cinco anos, você publicou artigos científicos?;0, Não | 1, Sim;
+eventos_cientificos;form_1;radio;Você participa de eventos científicos? ;0, Não | 1, Sim;
+apresentacao_trabalho_evento;form_1;radio;Você apresentou trabalho (pôster / apresentação oral / etc) em eventos científicos recentemente?;0, Não | 1, Sim;
+evento_apresentado;form_1;notes;Qual foi o evento em que o trabalho foi apresentado?;;
+importancia_pesquisa_inovacao;form_1;dropdown;Considero a pesquisa científica importante para o desenvolvimento da assistência, ensino e inovação em saúde?;1, Discordo totalmente | 2, Discordo parcialmente | 3, Nem concordo nem discordo | 4, Concordo parcialmente | 5, Concordo totalmente;
+pesquisa_desenvolvimento_profissional;form_1;dropdown;Minha participação em atividades de pesquisa contribuiu para meu desenvolvimento profissional?;1, Discordo totalmente | 2, Discordo parcialmente | 3, Nem concordo nem discordo | 4, Concordo parcialmente | 5, Concordo totalmente;
+obstaculos_pesquisa;form_1;checkbox;Quais são hoje os principais obstáculos para você desenvolver pesquisas?;1, Falta de tempo | 2, Sobrecarga assistencial | 3, Falta de conhecimento metodológico | 4, Dificuldade em estatística | 5, Dificuldade para escrever | 6, Falta de orientação/mentoria | 7, Falta de financiamento | 8, Pouco incentivo institucional | 9, Outro;Escolha até três
+descreva_obstaculo_pesquisa;form_1;text;Qual?;;
+motivacao_pesquisa;form_1;checkbox;Qual tipo de reconhecimento teria maior impacto para motivá-lo a desenvolver pesquisas? ;1, Tempo protegido durante a jornada de trabalho | 2, Progressão na carreira | 3, Auxílio financeiro para participação em congressos | 4, Auxílio para pagamento de taxas de publicação | 5, Certificação | 6, Reconhecimento institucional (homenagens, divulgação dos resultados) | 7, Pontuação em processos seletivos | 8, Possibilidade de participar de cursos/treinamentos | 9, Outro;Escolha até três
+descreva_motivacao_pesquisa;form_1;text;Qual?;;
+conhecimento_cenap;form_1;dropdown;Tenho conhecimento sobre as atividades desenvolvidas pelo Centro de Apoio à Pesquisa e Publicação (CENAP)?;1, Discordo totalmente | 2, Discordo parcialmente | 3, Nem concordo nem discordo | 4, Concordo parcialmente | 5, Concordo totalmente;
+utilizou_cenap;form_1;radio;Já utilizei os serviços do CENAP? ;0, Não | 1, Sim;
+papel_cenap_instituicao;form_1;dropdown;O CENAP desempenha um papel importante no incentivo e fortalecimento da pesquisa científica na instituição;1, Discordo totalmente | 2, Discordo parcialmente | 3, Nem concordo nem discordo | 4, Concordo parcialmente | 5, Concordo totalmente;
+atendimento_cenap;form_1;dropdown;Estou satisfeito(a) com a qualidade do atendimento recebido pela equipe do CENAP?;1, Discordo totalmente | 2, Discordo parcialmente | 3, Nem concordo nem discordo | 4, Concordo parcialmente | 5, Concordo totalmente;
+orientacoes_cenap;form_1;dropdown;As orientações fornecidas pelo CENAP foram claras e adequadas às minhas necessidades?;1, Discordo totalmente | 2, Discordo parcialmente | 3, Nem concordo nem discordo | 4, Concordo parcialmente | 5, Concordo totalmente;
+servicos_cenap;form_1;dropdown;De forma geral, estou satisfeito(a) com os serviços prestados pelo CENAP;1, Discordo totalmente | 2, Discordo parcialmente | 3, Nem concordo nem discordo | 4, Concordo parcialmente | 5, Concordo totalmente;
+comentarios_sugestoes;form_1;notes;Comentários e sugestões ;;
