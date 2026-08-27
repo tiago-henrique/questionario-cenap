@@ -313,9 +313,6 @@ if sel_categoria is not None:
 st.sidebar.markdown("---")
 st.sidebar.caption(f"**{len(filtered)}** de **{len(df)}** respondentes selecionados")
 
-# --------------------------------------------------------------------------------------
-# HEADER
-# --------------------------------------------------------------------------------------
 st.markdown(
     f"""
     <div style="display:flex; align-items:center; gap:14px; margin-bottom:0;">
@@ -347,9 +344,6 @@ if filtered.empty:
     st.warning("Nenhum respondente corresponde aos filtros selecionados.")
     st.stop()
 
-# --------------------------------------------------------------------------------------
-# KPIs
-# --------------------------------------------------------------------------------------
 k1, k2, k3, k4, k5 = st.columns(5)
 k1.metric("Respondentes", len(filtered))
 k2.metric("Participam de pesquisa", f"{yesno_pct(filtered, 'participa_pesquisa')}%")
@@ -359,15 +353,11 @@ k5.metric("Já utilizaram o CENAP", f"{yesno_pct(filtered, 'utilizou_cenap')}%")
 
 st.markdown("")
 
-# --------------------------------------------------------------------------------------
-# TABS
-# --------------------------------------------------------------------------------------
 tab_perfil, tab_pesquisa, tab_obstaculos, tab_cenap, tab_comentarios = st.tabs(
     ["👥 Perfil dos Respondentes", "📊 Pesquisa & Publicação", "🚧 Obstáculos & Motivação",
      "🏛️ Avaliação do CENAP", "💬 Comentários"]
 )
 
-# ---- PERFIL --------------------------------------------------------------------------
 with tab_perfil:
     c1, c2 = st.columns(2)
 
@@ -404,7 +394,6 @@ with tab_perfil:
         fig3.update_layout(showlegend=False, height=420, margin=dict(l=10, r=10, t=50, b=10))
         st.plotly_chart(fig3, use_container_width=True)
 
-# ---- PESQUISA & PUBLICAÇÃO ------------------------------------------------------------
 with tab_pesquisa:
     c1, c2, c3, c4 = st.columns(4)
     for col, field, label in [
@@ -451,7 +440,6 @@ with tab_pesquisa:
             fig4.update_layout(showlegend=False, height=350, margin=dict(l=10, r=10, t=20, b=10))
             st.plotly_chart(fig4, use_container_width=True)
 
-# ---- OBSTÁCULOS & MOTIVAÇÃO -----------------------------------------------------------
 with tab_obstaculos:
     c1, c2 = st.columns(2)
     with c1:
@@ -478,7 +466,6 @@ with tab_obstaculos:
 
     st.caption("Cada respondente podia selecionar até três opções em cada pergunta.")
 
-# ---- CENAP ------------------------------------------------------------------------------
 with tab_cenap:
     c1, c2, c3 = st.columns(3)
     c1.metric("Conhece as atividades do CENAP", f"{agreement_score(filtered, 'conhecimento_cenap')}%")
@@ -524,7 +511,6 @@ with tab_cenap:
     fig5.update_layout(height=420, xaxis_tickangle=-25, margin=dict(l=10, r=10, t=30, b=10))
     st.plotly_chart(fig5, use_container_width=True)
 
-# ---- COMENTÁRIOS ------------------------------------------------------------------------
 with tab_comentarios:
     comments = filtered["comentarios_sugestoes"].dropna().astype(str)
     comments = comments[comments.str.strip() != ""]
