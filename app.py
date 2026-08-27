@@ -596,17 +596,4 @@ with tab_comentarios:
                 unsafe_allow_html=True,
             )
 
-# --------------------------------------------------------------------------------------
-# EXPORT / DADOS BRUTOS
-# --------------------------------------------------------------------------------------
-with st.expander("📄 Ver tabela de dados filtrados"):
-    display_df = filtered.copy()
-    for f in list(FIELD_META.keys()):
-        if f in display_df.columns and FIELD_META[f]["choices"]:
-            display_df[f] = decode_series(display_df[f], f)
-    st.dataframe(display_df, use_container_width=True, height=350)
-    csv_bytes = display_df.to_csv(index=False).encode("utf-8-sig")
-    st.download_button("⬇️ Baixar dados filtrados (CSV)", csv_bytes, "dados_filtrados.csv", "text/csv")
-
-st.markdown("---")
-st.caption("Dashboard construído para o Centro de Apoio à Pesquisa e Publicação (CENAP) — FAMERP/FUNFARME.")
+st.caption("Dashboard construído por Tiago Henrique para o Centro de Apoio à Pesquisa e Publicação (CENAP) — FAMERP/FUNFARME. 2026")
