@@ -23,7 +23,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-PRIMARY = "#0B5D6B"      # petróleo institucional
+PRIMARY = "#0B5D6B"
 SECONDARY = "#159895"
 ACCENT = "#F4A259"
 LIKERT_COLORS = ["#C7373F", "#E5A03B", "#B0B0B0", "#7CB9A8", "#0B5D6B"]
@@ -153,36 +153,7 @@ def generate_demo_data(n=180, seed=42) -> pd.DataFrame:
         conhece_cenap = likert(bias=-0.05 if categoria in ["5", "3"] else 0.05)
         utilizou = rng.choice(["0", "1"], p=[0.55, 0.45]) if conhece_cenap in ["4", "5"] else rng.choice(["0", "1"], p=[0.85, 0.15])
 
-        row = {
-            "record_id": i + 1,
-            "vinculo_institucional": vinculo,
-            "outro_setor": "",
-            "setor_trabalho": rng.choice(setores),
-            "categoria_profissional": categoria,
-            "participa_pesquisa": participa,
-            "publicacao_cinco_anos": publicou,
-            "eventos_cientificos": eventos,
-            "apresentacao_trabalho_evento": apresentou,
-            "evento_apresentado": rng.choice(
-                ["Congresso Brasileiro de Clínica Médica", "Semana Científica FAMERP",
-                 "Jornada de Residência Médica", "Congresso Internacional de Oncologia", ""]
-            ) if apresentou == "1" else "",
-            "importancia_pesquisa_inovacao": likert(bias=0.10),
-            "pesquisa_desenvolvimento_profissional": likert(bias=0.05),
-            "conhecimento_cenap": conhece_cenap,
-            "utilizou_cenap": utilizou,
-            "papel_cenap_instituicao": likert(bias=0.10),
-            "atendimento_cenap": likert(bias=0.15) if utilizou == "1" else likert(bias=0.0),
-            "orientacoes_cenap": likert(bias=0.10) if utilizou == "1" else likert(bias=0.0),
-            "servicos_cenap": likert(bias=0.10) if utilizou == "1" else likert(bias=0.0),
-            "comentarios_sugestoes": rng.choice(
-                ["", "", "", "Poderiam divulgar mais os cursos oferecidos.",
-                 "Falta tempo protegido para pesquisa na rotina assistencial.",
-                 "Excelente suporte na submissão ao comitê de ética.",
-                 "Gostaria de mais oficinas de escrita científica.",
-                 "Processo de aprovação poderia ser mais ágil."]
-            ),
-        }
+       
 
         obst_opts = list(FIELD_META["obstaculos_pesquisa"]["choices"].keys())
         obst_choice = rng.choice(obst_opts, size=rng.integers(1, 4), replace=False)
