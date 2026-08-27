@@ -210,11 +210,43 @@ def generate_demo_data(n=180, seed=42) -> pd.DataFrame:
 # --------------------------------------------------------------------------------------
 # HELPERS DE DECODIFICAÇÃO
 # --------------------------------------------------------------------------------------
-def decode_series(series: pd.Series, field: str) -> pd.Series:
+def normalize_code(x) -> str:
+    """Normaliza um código de resposta para string canônica ('1', não '1.0').
+
+    O export do REDCap traz códigos numéricos, mas quando a coluna tem valores
+    ausentes o pandas converte tudo para float (1 -> 1.0), o que quebra a
+    correspondência com as chaves string do dicionário de dados. Esta função
+    trata esse caso.
+    """
+    if pd.isna(x):
+        return ""
+    s = str(x).strip()
+    try:
+        f = float(s)
+        if f.is_integer():
+            return str(int(f))
+        return s
+    except (ValueError, TypeError):
+        return s
+
+
+def decode_series(series: pd.Series, field: str, na_label: str = "Não informado") -> pd.Series:
+    """Decodifica os códigos usando o dicionário de dados.
+
+    Valores ausentes/vazios são rotulados como `na_label` em vez de descartados,
+    para que apareçam como categoria própria nas contagens e gráficos.
+    """
     choices = FIELD_META.get(field, {}).get("choices", {})
     if not choices:
-        return series
-    return series.astype(str).map(lambda x: choices.get(x, x))
+        return series.fillna(na_label).replace("", na_label)
+
+    def _map(x):
+        code = normalize_code(x)
+        if code == "":
+            return na_label
+        return choices.get(code, x)
+
+    return series.map(_map)
 
 
 def checkbox_summary(df: pd.DataFrame, field: str) -> pd.DataFrame:
@@ -245,7 +277,7 @@ def agreement_score(df: pd.DataFrame, field: str) -> float:
 
 
 def yesno_pct(df: pd.DataFrame, field: str) -> float:
-    vals = df[field].astype(str)
+    vals = df[field].map(normalize_code)
     valid = vals[vals.isin(["0", "1"])]
     if len(valid) == 0:
         return np.nan
@@ -282,8 +314,8 @@ REDCAP_API_TOKEN = st.secrets.get("REDCAP_API_TOKEN", "")
 
 st.sidebar.markdown("## 📁 Fonte de dados — API do REDCap")
 if REDCAP_API_URL:
-    #st.sidebar.caption(f"`{REDCAP_API_URL}`")
-    fetch_clicked = st.sidebar.button("🔄 Atualizar dados do REDCap", use_container_width=True)
+    st.sidebar.caption(f"`{REDCAP_API_URL}`")
+fetch_clicked = st.sidebar.button("🔄 Atualizar dados do REDCap", use_container_width=True)
 
 if fetch_clicked:
     st.cache_data.clear()
@@ -567,14 +599,14 @@ with tab_comentarios:
 # --------------------------------------------------------------------------------------
 # EXPORT / DADOS BRUTOS
 # --------------------------------------------------------------------------------------
-# with st.expander("📄 Ver tabela de dados filtrados"):
-#     display_df = filtered.copy()
-#     for f in list(FIELD_META.keys()):
-#         if f in display_df.columns and FIELD_META[f]["choices"]:
-#             display_df[f] = decode_series(display_df[f], f)
-#     st.dataframe(display_df, use_container_width=True, height=350)
-#     csv_bytes = display_df.to_csv(index=False).encode("utf-8-sig")
-#     st.download_button("⬇️ Baixar dados filtrados (CSV)", csv_bytes, "dados_filtrados.csv", "text/csv")
+with st.expander("📄 Ver tabela de dados filtrados"):
+    display_df = filtered.copy()
+    for f in list(FIELD_META.keys()):
+        if f in display_df.columns and FIELD_META[f]["choices"]:
+            display_df[f] = decode_series(display_df[f], f)
+    st.dataframe(display_df, use_container_width=True, height=350)
+    csv_bytes = display_df.to_csv(index=False).encode("utf-8-sig")
+    st.download_button("⬇️ Baixar dados filtrados (CSV)", csv_bytes, "dados_filtrados.csv", "text/csv")
 
-# st.markdown("---")
-st.caption("Dashboard construído por Tiago Henrique para o Centro de Apoio à Pesquisa e Publicação (CENAP) — FAMERP/FUNFARME.")
+st.markdown("---")
+st.caption("Dashboard construído para o Centro de Apoio à Pesquisa e Publicação (CENAP) — FAMERP/FUNFARME.")
