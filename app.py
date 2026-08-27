@@ -13,9 +13,6 @@ import plotly.graph_objects as go
 import requests
 import streamlit as st
 
-# --------------------------------------------------------------------------------------
-# CONFIG
-# --------------------------------------------------------------------------------------
 st.set_page_config(
     page_title="Percepção sobre Pesquisa | CENAP",
     page_icon="🔬",
@@ -256,16 +253,13 @@ def fetch_redcap_records(api_url: str, api_token: str) -> pd.DataFrame:
     return pd.read_csv(io.StringIO(r.text))
 
 
-# --------------------------------------------------------------------------------------
-# SIDEBAR: FONTE DE DADOS (API DO REDCAP, via .streamlit/secrets.toml) E FILTROS
-# --------------------------------------------------------------------------------------
 REDCAP_API_URL = st.secrets.get("REDCAP_API_URL", "")
 REDCAP_API_TOKEN = st.secrets.get("REDCAP_API_TOKEN", "")
 
 st.sidebar.markdown("## 📁 Fonte de dados — API do REDCap")
 if REDCAP_API_URL:
-    st.sidebar.caption(f"`{REDCAP_API_URL}`")
-fetch_clicked = st.sidebar.button("🔄 Atualizar dados do REDCap", use_container_width=True)
+#    st.sidebar.caption(f"`{REDCAP_API_URL}`")
+    fetch_clicked = st.sidebar.button("🔄 Atualizar dados do REDCap", use_container_width=True)
 
 if fetch_clicked:
     st.cache_data.clear()
