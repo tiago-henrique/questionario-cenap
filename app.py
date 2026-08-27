@@ -72,15 +72,11 @@ LIKERT_ORDER = [
     "Concordo totalmente",
 ]
 
-# --------------------------------------------------------------------------------------
-# DICIONÁRIO DE DADOS
-# --------------------------------------------------------------------------------------
 @st.cache_data
 def load_dictionary(path: Path) -> pd.DataFrame:
     df = pd.read_csv(path, sep=";", encoding="utf-8-sig")
     df.columns = [c.strip() for c in df.columns]
     return df
-
 
 def parse_choices(raw: str) -> dict:
     """'1, Sim | 0, Não' -> {'1': 'Sim', '0': 'Não'}"""
@@ -124,9 +120,6 @@ YESNO_FIELDS = [
 ]
 
 
-# --------------------------------------------------------------------------------------
-# DADOS DE DEMONSTRAÇÃO (usados até que um export real do REDCap seja carregado)
-# --------------------------------------------------------------------------------------
 @st.cache_data
 def generate_demo_data(n=180, seed=42) -> pd.DataFrame:
     rng = np.random.default_rng(seed)
@@ -191,7 +184,6 @@ def generate_demo_data(n=180, seed=42) -> pd.DataFrame:
             ),
         }
 
-        # checkboxes
         obst_opts = list(FIELD_META["obstaculos_pesquisa"]["choices"].keys())
         obst_choice = rng.choice(obst_opts, size=rng.integers(1, 4), replace=False)
         for c in obst_opts:
@@ -207,17 +199,7 @@ def generate_demo_data(n=180, seed=42) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-# --------------------------------------------------------------------------------------
-# HELPERS DE DECODIFICAÇÃO
-# --------------------------------------------------------------------------------------
 def normalize_code(x) -> str:
-    """Normaliza um código de resposta para string canônica ('1', não '1.0').
-
-    O export do REDCap traz códigos numéricos, mas quando a coluna tem valores
-    ausentes o pandas converte tudo para float (1 -> 1.0), o que quebra a
-    correspondência com as chaves string do dicionário de dados. Esta função
-    trata esse caso.
-    """
     if pd.isna(x):
         return ""
     s = str(x).strip()
@@ -284,9 +266,6 @@ def yesno_pct(df: pd.DataFrame, field: str) -> float:
     return round((valid == "1").sum() / len(valid) * 100, 1)
 
 
-# --------------------------------------------------------------------------------------
-# REDCap API
-# --------------------------------------------------------------------------------------
 @st.cache_data(ttl=300, show_spinner=False)
 def fetch_redcap_records(api_url: str, api_token: str) -> pd.DataFrame:
     """Busca os registros de resposta via REDCap API (content='record', formato CSV)."""
@@ -295,7 +274,7 @@ def fetch_redcap_records(api_url: str, api_token: str) -> pd.DataFrame:
         "content": "record",
         "format": "csv",
         "type": "flat",
-        "rawOrLabel": "raw",   # mantemos os códigos e decodificamos localmente com o dicionário
+        "rawOrLabel": "raw",
         "returnFormat": "csv",
     }
     r = requests.post(api_url, data=data, timeout=30)
