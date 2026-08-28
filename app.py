@@ -324,6 +324,14 @@ if REDCAP_API_URL:
 if fetch_clicked:
     st.cache_data.clear()
 
+if active_filters:
+    st.sidebar.markdown("**Filtro por clique ativo:**")
+    st.sidebar.markdown(" · ".join(active_filters))
+    if st.sidebar.button("✖️ Limpar seleção do gráfico", use_container_width=True):
+        st.session_state.pop("chart_vinculo", None)
+        st.session_state.pop("chart_cenap_uso", None)
+        st.rerun()
+        
 using_demo = False
 raw_df = None
 api_error = None
@@ -386,13 +394,13 @@ if cenap_click:
 st.sidebar.markdown("---")
 st.sidebar.caption(f"**{len(filtered)}** de **{len(df)}** respondentes selecionados")
 
-if active_filters:
-    st.sidebar.markdown("**Filtro por clique ativo:**")
-    st.sidebar.markdown(" · ".join(active_filters))
-    if st.sidebar.button("✖️ Limpar seleção do gráfico", use_container_width=True):
-        st.session_state.pop("chart_vinculo", None)
-        st.session_state.pop("chart_cenap_uso", None)
-        st.rerun()
+#if active_filters:
+#    st.sidebar.markdown("**Filtro por clique ativo:**")
+#    st.sidebar.markdown(" · ".join(active_filters))
+#    if st.sidebar.button("✖️ Limpar seleção do gráfico", use_container_width=True):
+#        st.session_state.pop("chart_vinculo", None)
+#        st.session_state.pop("chart_cenap_uso", None)
+#        st.rerun()
 
 st.markdown(
     f"""
