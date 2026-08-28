@@ -204,11 +204,8 @@ def generate_demo_data(n=180, seed=42) -> pd.DataFrame:
         mot_choice = rng.choice(mot_opts, size=min(int(rng.integers(1, 4)), len(mot_opts)), replace=False)
         for c in mot_opts:
             row[f"motivacao_pesquisa___{c}"] = "1" if c in mot_choice else "0"
-
         rows.append(row)
-
     return pd.DataFrame(rows)
-
 
 def normalize_code(x) -> str:
     if pd.isna(x):
@@ -221,7 +218,6 @@ def normalize_code(x) -> str:
         return s
     except (ValueError, TypeError):
         return s
-
 
 def decode_series(series: pd.Series, field: str, na_label: str = "Não informado") -> pd.Series:
     choices = FIELD_META.get(field, {}).get("choices", {})
@@ -311,6 +307,21 @@ if REDCAP_API_URL:
 if fetch_clicked:
     st.cache_data.clear()
 active_filters = []
+
+vinculo_click = get_selected_label("chart_vinculo")
+if vinculo_click:
+    filtered = filtered[decode_series(filtered["vinculo_institucional"], "vinculo_institucional") == vinculo_click]
+    active_filters.append(f"🏥 Unidade: **{vinculo_click}**")
+
+cenap_click = get_selected_label("chart_cenap_uso")
+if cenap_click:
+    filtered = filtered[decode_series(filtered["utilizou_cenap"], "utilizou_cenap") == cenap_click]
+    active_filters.append(f"🏛️ Já utilizou o CENAP: **{cenap_click}**")
+
+st.sidebar.markdown("---")
+st.sidebar.caption(f"**{len(filtered)}** de **{len(df)}** respondentes selecionados")
+
+
 if active_filters:
     st.sidebar.markdown("**Filtro por clique ativo:**")
     st.sidebar.markdown(" · ".join(active_filters))
@@ -368,18 +379,18 @@ base_filtered = filtered.copy()
 
 #active_filters = []
 
-vinculo_click = get_selected_label("chart_vinculo")
-if vinculo_click:
-    filtered = filtered[decode_series(filtered["vinculo_institucional"], "vinculo_institucional") == vinculo_click]
-    active_filters.append(f"🏥 Unidade: **{vinculo_click}**")
+#vinculo_click = get_selected_label("chart_vinculo")
+#if vinculo_click:
+#    filtered = filtered[decode_series(filtered["vinculo_institucional"], "vinculo_institucional") == vinculo_click]
+#    active_filters.append(f"🏥 Unidade: **{vinculo_click}**")
 
-cenap_click = get_selected_label("chart_cenap_uso")
-if cenap_click:
-    filtered = filtered[decode_series(filtered["utilizou_cenap"], "utilizou_cenap") == cenap_click]
-    active_filters.append(f"🏛️ Já utilizou o CENAP: **{cenap_click}**")
+#cenap_click = get_selected_label("chart_cenap_uso")
+#if cenap_click:
+#    filtered = filtered[decode_series(filtered["utilizou_cenap"], "utilizou_cenap") == cenap_click]
+#    active_filters.append(f"🏛️ Já utilizou o CENAP: **{cenap_click}**")
 
-st.sidebar.markdown("---")
-st.sidebar.caption(f"**{len(filtered)}** de **{len(df)}** respondentes selecionados")
+#st.sidebar.markdown("---")
+#st.sidebar.caption(f"**{len(filtered)}** de **{len(df)}** respondentes selecionados")
 
 #if active_filters:
 #    st.sidebar.markdown("**Filtro por clique ativo:**")
