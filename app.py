@@ -258,7 +258,6 @@ REDCAP_API_TOKEN = st.secrets.get("REDCAP_API_TOKEN", "")
 
 st.sidebar.markdown("## 📁 Fonte de dados — API do REDCap")
 if REDCAP_API_URL:
-#    st.sidebar.caption(f"`{REDCAP_API_URL}`")
     fetch_clicked = st.sidebar.button("🔄 Atualizar dados do REDCap", use_container_width=True)
 
 if fetch_clicked:
