@@ -231,11 +231,6 @@ def normalize_code(x) -> str:
 
 
 def decode_series(series: pd.Series, field: str, na_label: str = "Não informado") -> pd.Series:
-    """Decodifica os códigos usando o dicionário de dados.
-
-    Valores ausentes/vazios são rotulados como `na_label` em vez de descartados,
-    para que apareçam como categoria própria nas contagens e gráficos.
-    """
     choices = FIELD_META.get(field, {}).get("choices", {})
     if not choices:
         return series.fillna(na_label).replace("", na_label)
@@ -374,12 +369,6 @@ if sel_vinculo is not None:
 if sel_categoria is not None:
     filtered = filtered[decode_series(filtered["categoria_profissional"], "categoria_profissional").isin(sel_categoria)]
 
-# ---------------------------------------------------------------------------
-# Filtro cruzado por clique nos gráficos ("Unidade do complexo" e
-# "Já utilizou o CENAP"). Os gráficos-fonte continuam mostrando todas as
-# barras (base_filtered); os demais gráficos/KPIs usam a versão já
-# recortada pela seleção (filtered).
-# ---------------------------------------------------------------------------
 base_filtered = filtered.copy()
 
 active_filters = []
@@ -431,14 +420,7 @@ elif using_demo:
         'Preencha REDCAP_API_URL e REDCAP_API_TOKEN em <code>.streamlit/secrets.toml</code> para carregar os dados reais.</div>',
         unsafe_allow_html=True,
     )
-
-if active_filters:
-    st.markdown(
-        f'<div class="filter-banner">🔎 Filtro por clique ativo — {" · ".join(active_filters)} '
-        f'(use o botão "Limpar seleção" na barra lateral para remover)</div>',
-        unsafe_allow_html=True,
-    )
-
+    
 if filtered.empty:
     st.warning("Nenhum respondente corresponde aos filtros selecionados.")
     st.stop()
