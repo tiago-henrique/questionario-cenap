@@ -306,6 +306,15 @@ if REDCAP_API_URL:
 
 if fetch_clicked:
     st.cache_data.clear()
+
+filtered = df.copy()
+if sel_vinculo is not None:
+    filtered = filtered[decode_series(filtered["vinculo_institucional"], "vinculo_institucional").isin(sel_vinculo)]
+if sel_categoria is not None:
+    filtered = filtered[decode_series(filtered["categoria_profissional"], "categoria_profissional").isin(sel_categoria)]
+
+base_filtered = filtered.copy()
+
 active_filters = []
 
 vinculo_click = get_selected_label("chart_vinculo")
@@ -369,13 +378,13 @@ def multiselect_decoded(label, field, df):
 sel_vinculo = multiselect_decoded("Unidade / Vínculo institucional", "vinculo_institucional", df)
 sel_categoria = multiselect_decoded("Categoria profissional", "categoria_profissional", df)
 
-filtered = df.copy()
-if sel_vinculo is not None:
-    filtered = filtered[decode_series(filtered["vinculo_institucional"], "vinculo_institucional").isin(sel_vinculo)]
-if sel_categoria is not None:
-    filtered = filtered[decode_series(filtered["categoria_profissional"], "categoria_profissional").isin(sel_categoria)]
+#filtered = df.copy()
+#if sel_vinculo is not None:
+#    filtered = filtered[decode_series(filtered["vinculo_institucional"], "vinculo_institucional").isin(sel_vinculo)]
+#if sel_categoria is not None:
+#    filtered = filtered[decode_series(filtered["categoria_profissional"], "categoria_profissional").isin(sel_categoria)]
 
-base_filtered = filtered.copy()
+#base_filtered = filtered.copy()
 
 #active_filters = []
 
