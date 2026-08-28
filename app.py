@@ -1,10 +1,3 @@
-"""
-Dashboard - Questionário de Percepção sobre Atividades de Pesquisa
-FAMERP / FUNFARME - CENAP
-
-Requer streamlit >= 1.35 (uso do parâmetro on_select em st.plotly_chart
-para capturar cliques nas barras e aplicar filtro cruzado no dashboard).
-"""
 import io
 import re
 from pathlib import Path
@@ -280,11 +273,6 @@ def yesno_pct(df: pd.DataFrame, field: str) -> float:
 
 
 def get_selected_label(key: str):
-    """Lê o clique mais recente de um gráfico Plotly (st.plotly_chart on_select).
-
-    Para gráficos de barra horizontal (orientation='h') a categoria clicada
-    fica no eixo y do ponto selecionado.
-    """
     ev = st.session_state.get(key)
     if not ev:
         return None
@@ -296,7 +284,6 @@ def get_selected_label(key: str):
 
 @st.cache_data(ttl=300, show_spinner=False)
 def fetch_redcap_records(api_url: str, api_token: str) -> pd.DataFrame:
-    """Busca os registros de resposta via REDCap API (content='record', formato CSV)."""
     data = {
         "token": api_token,
         "content": "record",
@@ -323,7 +310,7 @@ if REDCAP_API_URL:
 
 if fetch_clicked:
     st.cache_data.clear()
-
+active_filters = []
 if active_filters:
     st.sidebar.markdown("**Filtro por clique ativo:**")
     st.sidebar.markdown(" · ".join(active_filters))
@@ -379,7 +366,7 @@ if sel_categoria is not None:
 
 base_filtered = filtered.copy()
 
-active_filters = []
+#active_filters = []
 
 vinculo_click = get_selected_label("chart_vinculo")
 if vinculo_click:
