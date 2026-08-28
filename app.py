@@ -307,38 +307,6 @@ if REDCAP_API_URL:
 if fetch_clicked:
     st.cache_data.clear()
 
-filtered = df.copy()
-if sel_vinculo is not None:
-    filtered = filtered[decode_series(filtered["vinculo_institucional"], "vinculo_institucional").isin(sel_vinculo)]
-if sel_categoria is not None:
-    filtered = filtered[decode_series(filtered["categoria_profissional"], "categoria_profissional").isin(sel_categoria)]
-
-base_filtered = filtered.copy()
-
-active_filters = []
-
-vinculo_click = get_selected_label("chart_vinculo")
-if vinculo_click:
-    filtered = filtered[decode_series(filtered["vinculo_institucional"], "vinculo_institucional") == vinculo_click]
-    active_filters.append(f"🏥 Unidade: **{vinculo_click}**")
-
-cenap_click = get_selected_label("chart_cenap_uso")
-if cenap_click:
-    filtered = filtered[decode_series(filtered["utilizou_cenap"], "utilizou_cenap") == cenap_click]
-    active_filters.append(f"🏛️ Já utilizou o CENAP: **{cenap_click}**")
-
-st.sidebar.markdown("---")
-st.sidebar.caption(f"**{len(filtered)}** de **{len(df)}** respondentes selecionados")
-
-
-if active_filters:
-    st.sidebar.markdown("**Filtro por clique ativo:**")
-    st.sidebar.markdown(" · ".join(active_filters))
-    if st.sidebar.button("✖️ Limpar seleção do gráfico", use_container_width=True):
-        st.session_state.pop("chart_vinculo", None)
-        st.session_state.pop("chart_cenap_uso", None)
-        st.rerun()
-        
 using_demo = False
 raw_df = None
 api_error = None
@@ -378,36 +346,35 @@ def multiselect_decoded(label, field, df):
 sel_vinculo = multiselect_decoded("Unidade / Vínculo institucional", "vinculo_institucional", df)
 sel_categoria = multiselect_decoded("Categoria profissional", "categoria_profissional", df)
 
-#filtered = df.copy()
-#if sel_vinculo is not None:
-#    filtered = filtered[decode_series(filtered["vinculo_institucional"], "vinculo_institucional").isin(sel_vinculo)]
-#if sel_categoria is not None:
-#    filtered = filtered[decode_series(filtered["categoria_profissional"], "categoria_profissional").isin(sel_categoria)]
+filtered = df.copy()
+if sel_vinculo is not None:
+    filtered = filtered[decode_series(filtered["vinculo_institucional"], "vinculo_institucional").isin(sel_vinculo)]
+if sel_categoria is not None:
+    filtered = filtered[decode_series(filtered["categoria_profissional"], "categoria_profissional").isin(sel_categoria)]
 
-#base_filtered = filtered.copy()
+base_filtered = filtered.copy()
 
-#active_filters = []
+active_filters = []
 
-#vinculo_click = get_selected_label("chart_vinculo")
-#if vinculo_click:
-#    filtered = filtered[decode_series(filtered["vinculo_institucional"], "vinculo_institucional") == vinculo_click]
-#    active_filters.append(f"🏥 Unidade: **{vinculo_click}**")
+vinculo_click = get_selected_label("chart_vinculo")
+if vinculo_click:
+    filtered = filtered[decode_series(filtered["vinculo_institucional"], "vinculo_institucional") == vinculo_click]
+    active_filters.append(f"🏥 Unidade: **{vinculo_click}**")
 
-#cenap_click = get_selected_label("chart_cenap_uso")
-#if cenap_click:
-#    filtered = filtered[decode_series(filtered["utilizou_cenap"], "utilizou_cenap") == cenap_click]
-#    active_filters.append(f"🏛️ Já utilizou o CENAP: **{cenap_click}**")
+cenap_click = get_selected_label("chart_cenap_uso")
+if cenap_click:
+    filtered = filtered[decode_series(filtered["utilizou_cenap"], "utilizou_cenap") == cenap_click]
+    active_filters.append(f"🏛️ Já utilizou o CENAP: **{cenap_click}**")
+st.sidebar.markdown("---")
+st.sidebar.caption(f"**{len(filtered)}** de **{len(df)}** respondentes selecionados")
 
-#st.sidebar.markdown("---")
-#st.sidebar.caption(f"**{len(filtered)}** de **{len(df)}** respondentes selecionados")
-
-#if active_filters:
-#    st.sidebar.markdown("**Filtro por clique ativo:**")
-#    st.sidebar.markdown(" · ".join(active_filters))
-#    if st.sidebar.button("✖️ Limpar seleção do gráfico", use_container_width=True):
-#        st.session_state.pop("chart_vinculo", None)
-#        st.session_state.pop("chart_cenap_uso", None)
-#        st.rerun()
+if active_filters:
+    st.sidebar.markdown("**Filtro por clique ativo:**")
+    st.sidebar.markdown(" · ".join(active_filters))
+    if st.sidebar.button("✖️ Limpar seleção do gráfico", use_container_width=True):
+        st.session_state.pop("chart_vinculo", None)
+        st.session_state.pop("chart_cenap_uso", None)
+        st.rerun()
 
 st.markdown(
     f"""
